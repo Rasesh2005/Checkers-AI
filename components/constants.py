@@ -1,9 +1,10 @@
+from config import WINDOW_SIZE
 import pygame
 
-WIDTH = HEIGHT = 640
+WIDTH = HEIGHT = WINDOW_SIZE
 ROWS=COLS=8
 SQUARE_SIZE = WIDTH//ROWS
-FPS=60
+
 
 # Colors
 WHITE = (255, 255, 255)

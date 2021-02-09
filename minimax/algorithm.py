@@ -1,3 +1,4 @@
+from config import VIS_DELAY
 from components.constants import GREEN,RED, SQUARE_SIZE,WHITE
 from copy import deepcopy
 import pygame
@@ -15,29 +16,29 @@ def minimax(board,depth,isComputer=True,visualize=False,game=None,alpha=-float("
     if depth==0 or board.winner():
         return board.evaluate(),board
     if isComputer:
-        maxScore=float('-inf')
+        bestScore=float('-inf')
         best_move=None
         for move in get_all_moves(board,WHITE,visualize,game):
             score,_=minimax(move,depth-1,False,visualize,game,alpha,beta)
-            maxScore=max(maxScore,score)
-            if maxScore==score:
+            bestScore=max(bestScore,score)
+            if bestScore==score:
                 best_move=move
-            alpha=max(alpha,maxScore)
+            alpha=max(alpha,bestScore)
             if alpha>=beta:
                 break
-        return maxScore,best_move
+        return bestScore,best_move
     else:
-        minScore=float('inf')
+        bestScore=float('inf')
         best_move=None
         for move in get_all_moves(board,RED,visualize,game):
             score,_=minimax(move,depth-1,True,visualize,game,alpha,beta)
-            minScore=min(minScore,score)
-            if minScore==score:
+            bestScore=min(bestScore,score)
+            if bestScore==score:
                 best_move=move
-            beta=min(beta,minScore)
+            beta=min(beta,bestScore)
             if beta<=alpha:
                 break
-        return minScore,best_move
+        return bestScore,best_move
 
 def get_all_moves(board,color,visualize,game):
     moves=[]
@@ -58,7 +59,7 @@ def draw_moves(game,board,piece):
     pygame.draw.circle(game.WIN,GREEN,(piece.x,piece.y),SQUARE_SIZE//2,5)
     game.draw_valid_moves(valid_moves.keys())
     pygame.display.update()
-    pygame.time.delay(100)
+    pygame.time.delay(VIS_DELAY)
 def simulate_move(piece,move,board,skip):
     board.move_piece(piece,move[0],move[1])
     if skip:

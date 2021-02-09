@@ -1,4 +1,5 @@
 import pygame
+pygame.font.init() 
 
 from .constants import *
 from .board import Board
@@ -11,18 +12,26 @@ class Game:
         self.turn=RED
         self.valid_moves={}
         self.WIN=win
+        self.thinking=False
 
     def update(self):
         self.board.draw(self.WIN)
         if self.selected:
             self.board.draw_selected_square(self.WIN,self.selected)
         self.draw_valid_moves(self.valid_moves)
+        if self.thinking:
+            self.render_text()
         pygame.display.update()
     def reset(self):
         self.selected=None
         self.board=Board()
         self.turn=RED
         self.valid_moves={}
+    def render_text(self):
+        myfont = pygame.font.SysFont('Comic Sans MS', 50)
+        text = myfont.render('Thinking...', False, GREEN)
+        self.WIN.blit(text,((WIDTH-text.get_width())//2,(WIDTH-text.get_height())//2))
+
     def select(self,row,col):
         if self.selected:
             temp=self.selected
